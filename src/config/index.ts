@@ -97,7 +97,7 @@ async function doMigrate(
     } else {
       const out = await ss.safeParse(mig.migrate, conf);
       if (!out.success) continue;
-      conf = out.data;
+      conf = out.value;
     }
 
     if (mig.onSuccess) mig.onSuccess(oldConf, conf);
