@@ -42,5 +42,5 @@ export const migrate = ConfigV3.transform((config) =>
     smallImage: config.smallImage == "lastfm" ? "logo" : config.smallImage,
     button1: config.button1 == "artist" ? "none" : config.button1,
     button2: config.button2 == "artist" ? "none" : config.button2,
-  }),
+  })
 );

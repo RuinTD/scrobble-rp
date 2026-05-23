@@ -1,6 +1,6 @@
 import { getLastTrack } from "./lastFm.ts";
 import { DateTime } from "luxon";
-import { CanvasRenderingContext2D, Image, Canvas } from "dwm";
+import { Canvas, CanvasRenderingContext2D, Image } from "dwm";
 import config from "../src/config/index.ts";
 import { encodeBase64 } from "@std/encoding";
 

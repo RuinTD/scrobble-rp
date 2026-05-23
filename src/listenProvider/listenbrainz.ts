@@ -118,10 +118,13 @@ async function _getListening(): Promise<Track | undefined | null> {
       const { metadata } = lookup;
       const { caa_release_mbid, caa_id } = metadata.release;
 
-      if (caa_release_mbid && caa_id)
-        ret.image = `http://coverartarchive.org/release/${caa_release_mbid}/${caa_id}-500.jpg`;
-      if (lookup.recording_mbid)
+      if (caa_release_mbid && caa_id) {
+        ret.image =
+          `http://coverartarchive.org/release/${caa_release_mbid}/${caa_id}-500.jpg`;
+      }
+      if (lookup.recording_mbid) {
         ret.url = `https://musicbrainz.org/recording/${lookup.recording_mbid}`;
+      }
 
       if (metadata.recording.length) ret.durationMS = metadata.recording.length;
     }

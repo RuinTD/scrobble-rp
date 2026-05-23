@@ -39,5 +39,5 @@ export const migrate = ConfigV4.transform((config) =>
     ...config,
     _VERSION: 5,
     useNintendoMusicArt: false,
-  }),
+  })
 );

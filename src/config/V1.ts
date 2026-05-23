@@ -35,15 +35,15 @@ export const migrate = ConfigV1.transform((config) =>
     shareUsername: config.shareName,
     disableOnPresence: config.otherEnabled
       ? {
-          any: config.other?.any,
-          listening: config.other?.listening,
-          cider: config.other?.cider,
-          iTunesRP: config.other?.iTRP,
-          PreMiDAppleMusic: config.other?.AMPMD,
-          custom: config.other?.custom,
-        }
+        any: config.other?.any,
+        listening: config.other?.listening,
+        cider: config.other?.cider,
+        iTunesRP: config.other?.iTRP,
+        PreMiDAppleMusic: config.other?.AMPMD,
+        custom: config.other?.custom,
+      }
       : undefined,
     lastFmApiKey: config.advanced.lastFmKey,
     discordClientId: config.advanced.appId,
-  }),
+  })
 );

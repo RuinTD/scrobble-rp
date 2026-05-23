@@ -1,8 +1,8 @@
 import * as z from "zod";
 import ConfigV7 from "./V7.ts";
 
-import { Provider, OtherConfig, ButtonType } from "./V5.ts";
-export { Provider, OtherConfig, ButtonType };
+import { ButtonType, OtherConfig, Provider } from "./V5.ts";
+export { ButtonType, OtherConfig, Provider };
 
 export const check = z.object({ _VERSION: z.literal(6) });
 export const ConfigV6 = z.object({
@@ -32,5 +32,5 @@ export const migrate = ConfigV6.transform((config) =>
     ...config,
     _VERSION: 7,
     showDuration: false,
-  }),
+  })
 );

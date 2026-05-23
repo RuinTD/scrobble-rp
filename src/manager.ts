@@ -1,10 +1,9 @@
 import chalk from "chalk";
 import { StartupRun } from "startup-run";
-import { select, confirm } from "@inquirer/prompts";
-import fs from "fs-extra";
-import { $ } from "bun";
-import EnterPrompt from "./lib/EnterPrompt";
+import { confirm, select } from "@inquirer/prompts";
+import EnterPrompt from "@ruintd/inquirer-enter";
 import { consola } from "consola";
+import $ from "dax";
 
 const run = StartupRun.create("Scrobble Rich Presence", {
   command: "bun",
@@ -55,12 +54,12 @@ while (true) {
       break;
     }
     case "update": {
-      if (!Bun.which("git")) {
+      if (!(await $.which("git"))) {
         consola.error(chalk.red("Git not found"));
         await pause();
         break;
       }
-      if (!(await fs.exists(".git"))) {
+      if (!(await $.path(".git").exists())) {
         consola.error(chalk.red("Not in a Git repository"));
         consola.log(
           "Please clone the GitHub repo instead of using Download ZIP",
@@ -69,8 +68,9 @@ while (true) {
         break;
       }
 
-      if (!(await confirm({ message: "Are you sure you want to update?" })))
+      if (!(await confirm({ message: "Are you sure you want to update?" }))) {
         break;
+      }
 
       await run.stop();
 

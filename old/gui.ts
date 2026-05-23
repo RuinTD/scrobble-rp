@@ -1,7 +1,7 @@
 import {
   Image,
-  WindowCanvas,
   mainloop,
+  WindowCanvas,
 } from "https://deno.land/x/dwm@0.3.4/ext/canvas.ts";
 import { genPlayImage } from "../src/nowPlayGen.ts";
 

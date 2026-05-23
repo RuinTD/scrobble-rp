@@ -56,8 +56,9 @@ async function sendRequest(params: Record<string, string>): Promise<unknown> {
   });
 
   const error = LastFMError.safeParse(data);
-  if (error.success)
+  if (error.success) {
     throw new Error(`Error ${error.data.error}: ${error.data.message}`);
+  }
 
   return data;
 }

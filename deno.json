@@ -1,0 +1,33 @@
+{
+  "tasks": {
+    "start": "deno -A src/index.ts",
+    "dev": "deno --watch src/index.ts",
+    "build": "deno -A src/build.ts",
+    "generateExample": "deno -A src/config/template.ts"
+  },
+  "imports": {
+    "@inquirer/prompts": "npm:@inquirer/prompts@^8.4.3",
+    "@ruintd/inquirer-enter": "jsr:@ruintd/inquirer-enter@^1.0.0",
+    "@ruintd/standard-utils": "jsr:@ruintd/standard-utils@^3.1.0",
+    "@standard-schema/spec": "npm:@standard-schema/spec@^1.1.0",
+    "@standard-schema/utils": "npm:@standard-schema/utils@^0.3.0",
+    "@std/assert": "jsr:@std/assert@^1.0.19",
+    "@std/async": "jsr:@std/async@^1.3.0",
+    "@std/datetime": "jsr:@std/datetime@^0.225.7",
+    "@xhayper/discord-rpc": "npm:@xhayper/discord-rpc@^1.3.4",
+    "axios": "npm:axios@^1.16.1",
+    "chalk": "npm:chalk@^5.6.2",
+    "consola": "npm:consola@^3.4.2",
+    "dax": "npm:dax@^0.47.0",
+    "discord-api-types": "npm:discord-api-types@^0.38.47",
+    "es-toolkit": "npm:es-toolkit@^1.46.1",
+    "expiry-map": "npm:expiry-map@^2.0.0",
+    "jiti": "npm:jiti@^2.7.0",
+    "luxon": "npm:luxon@^3.7.2",
+    "p-memoize": "npm:p-memoize@^8.0.0",
+    "prettier": "npm:prettier@^3.8.3",
+    "startup-run": "npm:startup-run@^0.0.10",
+    "yaml": "npm:yaml@^2.9.0",
+    "zod": "npm:zod@^4.4.3"
+  }
+}

@@ -1,30 +1,33 @@
-import { YAML } from "bun";
-import * as fs from "node:fs/promises";
+import YAML from "yaml";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 import * as process from "node:process";
 import chalk from "chalk";
 import * as ss from "@ruintd/standard-utils";
 import parseTemplate from "./template.ts";
 import {
-  Config,
-  OtherConfig,
-  ButtonType,
-  Provider,
-  Migrations,
   AnyConfig,
+  ButtonType,
+  Config,
+  Migrations,
+  OtherConfig,
+  Provider,
 } from "./const.ts";
 import { isEqual } from "es-toolkit";
 import { consola } from "consola";
-import EnterPrompt from "../lib/EnterPrompt.ts";
+import EnterPrompt from "@ruintd/inquirer-enter";
+import $ from "dax";
 
-export { Config, OtherConfig, ButtonType, Provider };
+export { ButtonType, Config, OtherConfig, Provider };
 
 const log = consola.withTag("Config");
+const confFile = $.path("config.yml");
 
 try {
-  const json = JSON.parse(await fs.readFile("config.json", "utf-8"));
-  await Bun.write("config.yml", YAML.stringify(json));
-  await fs.rename("config.json", "config.json.bak");
+  // const json = JSON.parse(await fs.readFile("config.json", "utf-8"));
+  const confJson = $.path("config.json");
+  const json = await confJson.readJson();
+  await confFile.write(YAML.stringify(json));
+  await confJson.rename("config.json.bak");
   log.info("Converted config.json to config.yml");
   log.info("Old config backed up to config.json.bak");
 } catch {
@@ -33,7 +36,7 @@ try {
 
 let oldFile: string;
 try {
-  oldFile = await Bun.file("config.yml").text();
+  oldFile = await confFile.readText();
 } catch {
   log.error(
     "Config not found. Please create config.yml, using config.example.yml as reference.",
@@ -54,10 +57,10 @@ try {
   const newFile = await parseTemplate(config);
 
   if (!isEqual(oldConfV, newConfV)) {
-    const bakFile = "config.yml.bak";
-    await Bun.write("config.yml", newFile);
+    const bakFile = $.path("config.yml.bak");
+    await confFile.write(newFile);
     log.info("Updated config.yml");
-    await Bun.write(bakFile, oldFile);
+    await bakFile.write(oldFile);
     log.info(`Old config backed up to ${bakFile}`);
   }
 } catch (e) {
@@ -67,8 +70,8 @@ try {
   process.exit();
 }
 
-export const lastFmApiKey =
-  config.lastFmApiKey || "3b64424cee4803202edd52b060297958";
+export const lastFmApiKey = config.lastFmApiKey ||
+  "3b64424cee4803202edd52b060297958";
 export const clientID = config.discordClientId || "740140397162135563";
 export default config;
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { z } from "zod/v4";
 import { DAY } from "@std/datetime/constants";
-import type { Track } from "../listenProvider";
+import type { Track } from "../listenProvider/index.ts";
 import ExpiryMap from "expiry-map";
 import pMemoize from "p-memoize";
 

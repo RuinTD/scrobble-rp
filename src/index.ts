@@ -1,8 +1,8 @@
 import listenProvider from "./listenProvider/index.ts";
-import { StatusDisplayType, type SetActivity } from "@xhayper/discord-rpc";
+import { type SetActivity, StatusDisplayType } from "@xhayper/discord-rpc";
 import {
-  type GatewayActivityButton,
   ActivityType,
+  type GatewayActivityButton,
 } from "discord-api-types/v10";
 import config, { ButtonType } from "./config/index.ts";
 import { hasOtherActivity } from "./otherIDs.ts";
@@ -15,6 +15,7 @@ import { tryResolveSongLink } from "./lib/songlink.ts";
 import { lookupMetadata } from "./listenProvider/listenbrainz.ts";
 import { getTrackInfo as getLastFmTrackInfo } from "./listenProvider/lastFm.ts";
 import { consola } from "consola";
+import $ from "dax";
 
 let lastStatus = {
   status: "",
@@ -27,7 +28,7 @@ while (true) {
   } catch (err) {
     consola.error("Failed to update:", err);
   }
-  await Bun.sleep(Time.SECOND);
+  await $.sleep(Time.SECOND);
 }
 
 /*
@@ -58,10 +59,11 @@ export function status(status = "") {
 
 async function activity(): Promise<SetActivity | undefined | null> {
   const otherAct = await hasOtherActivity();
-  if (otherAct)
+  if (otherAct) {
     return void status(
       chalk.dim(chalk.bold("Detected another player: ") + otherAct.name),
     );
+  }
 
   const track = await listenProvider.getListening();
   if (track === null) return null; // Return null if error
@@ -104,7 +106,8 @@ async function activity(): Promise<SetActivity | undefined | null> {
       const user = await listenProvider.getUser();
       if (user) {
         ret.smallImageKey = user.image || listenProvider.logoAsset;
-        ret.smallImageText = `Scrobbling as ${user.name} on ${listenProvider.name}`;
+        ret.smallImageText =
+          `Scrobbling as ${user.name} on ${listenProvider.name}`;
       }
     }
   }
@@ -162,11 +165,12 @@ async function getButton(
       if (!track.artist) return;
 
       const info = await getLastFmTrackInfo(track.name, track.artist);
-      if (info)
+      if (info) {
         return {
           label: "View Song",
           url: info.url,
         };
+      }
       return;
     }
     case "song-listenbrainz":
@@ -183,13 +187,13 @@ async function getButton(
       if (!mbid) return;
       return type == "song-listenbrainz"
         ? {
-            label: "Listen to Song",
-            url: `https://listenbrainz.org/player/?recording_mbids=${mbid}`,
-          }
+          label: "Listen to Song",
+          url: `https://listenbrainz.org/player/?recording_mbids=${mbid}`,
+        }
         : {
-            label: "View Song",
-            url: `https://musicbrainz.org/recording/${mbid}`,
-          };
+          label: "View Song",
+          url: `https://musicbrainz.org/recording/${mbid}`,
+        };
     }
     case "profile": {
       const user = await listenProvider.getUser();
@@ -201,8 +205,9 @@ async function getButton(
     }
     case "github": {
       const url = "https://github.com/RuiNtD/lastfm-rp";
-      if ((await getDiscordUser()).id == "157917665162297344")
+      if ((await getDiscordUser()).id == "157917665162297344") {
         return { url, label: "Scrobble RP Made by Me 💛" };
+      }
       return { url, label: "Scrobble Rich Presence" };
     }
   }

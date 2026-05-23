@@ -1,8 +1,8 @@
 import * as z from "zod";
 import ConfigV9 from "./V9.ts";
 
-import { Provider, OtherConfig, ButtonType } from "./V7.ts";
-export { Provider, OtherConfig, ButtonType };
+import { ButtonType, OtherConfig, Provider } from "./V7.ts";
+export { ButtonType, OtherConfig, Provider };
 
 export const check = z.object({ _VERSION: z.literal(8) });
 export const ConfigV8 = z.object({
@@ -38,5 +38,5 @@ export const migrate = ConfigV8.transform((config) =>
       useSongArt: config.useNintendoMusicArt,
       formatSplatoonArtist: config.useNintendoMusicFormat,
     },
-  }),
+  })
 );

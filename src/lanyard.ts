@@ -3,6 +3,7 @@ import { z } from "zod/v4";
 import { getDiscordUser } from "./discord.ts";
 import chalk from "chalk";
 import { consola } from "consola";
+import $ from "dax";
 
 const log = consola.withTag(chalk.hex("#d7bb87")("Lanyard"));
 
@@ -85,8 +86,9 @@ function connect() {
       case LanyardWSOpcodes.Event: {
         const { d } = msg;
         if (isEmpty(d)) {
-          if (!firstWarn)
+          if (!firstWarn) {
             log.error(chalk.red("Please join discord.gg/lanyard"));
+          }
           firstWarn = true;
           lanyardCache = undefined;
         } else if (isData(d)) {
@@ -111,7 +113,7 @@ function connect() {
 
   ws.onclose = async () => {
     log.warn(chalk.red("Disconnected"));
-    await Bun.sleep(5000);
+    await $.sleep(5000);
     connect();
   };
 
@@ -119,7 +121,7 @@ function connect() {
     log.error(chalk.red("Error"), e);
     ws.onclose = null;
     ws.close();
-    await Bun.sleep(5000);
+    await $.sleep(5000);
     connect();
   };
 }
@@ -130,7 +132,7 @@ async function addID(id: string) {
   connectIDs.push(id);
 
   while (ws.readyState != WebSocket.OPEN) {
-    await Bun.sleep(0);
+    await $.sleep(0);
   }
 
   gotFirstData = false;
@@ -144,7 +146,7 @@ async function addID(id: string) {
 }
 
 export async function getLanyard() {
-  while (!gotFirstData) await Bun.sleep(0);
+  while (!gotFirstData) await $.sleep(0);
 
   const { id } = await getDiscordUser();
   await addID(id);

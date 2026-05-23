@@ -32,5 +32,5 @@ export const migrate = ConfigV2.transform((config) =>
     smallImage: config.shareUsername ? "profile" : "lastfm",
     button1: "song",
     button2: config.shareUsername ? "profile" : "none",
-  }),
+  })
 );

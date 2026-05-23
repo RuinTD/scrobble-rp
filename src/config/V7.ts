@@ -1,8 +1,8 @@
 import * as z from "zod";
 import ConfigV8 from "./V8.ts";
 
-import { Provider, OtherConfig } from "./V6.ts";
-export { Provider, OtherConfig };
+import { OtherConfig, Provider } from "./V6.ts";
+export { OtherConfig, Provider };
 
 export const ButtonType = z.enum([
   "song",
@@ -46,5 +46,5 @@ export const migrate = ConfigV7.transform((config) =>
     _VERSION: 8,
     showElapsedTime: true,
     showRemainingTime: config.showDuration,
-  }),
+  })
 );

@@ -1,7 +1,7 @@
 import * as z from "zod";
 
-import { Provider, ButtonType } from "./V8.ts";
-export { Provider, ButtonType };
+import { ButtonType, Provider } from "./V8.ts";
+export { ButtonType, Provider };
 
 export const OtherConfig = z.object({
   any: z.boolean().default(false),

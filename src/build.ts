@@ -1,22 +1,22 @@
-const targets: Partial<Record<Bun.Build.CompileTarget, string>> = {
-  "bun-windows-x64": "windows-x64",
-  "bun-windows-arm64": "windows-arm64",
-  "bun-darwin-x64": "macos-x64",
-  "bun-darwin-arm64": "macos-arm64",
-  "bun-linux-x64": "linux-x64",
-  "bun-linux-arm64": "linux-arm64",
+import $ from "dax";
+
+const targets: Record<string, string> = {
+  "x86_64-pc-windows-msvc": "windows-x64",
+  // "bun-windows-arm64": "windows-arm64",
+  "x86_64-apple-darwin": "macos-x64",
+  "aarch64-apple-darwin": "macos-arm64",
+  "x86_64-unknown-linux-gnu": "linux-x64",
+  "aarch64-unknown-linux-gnu": "linux-arm64",
 };
 
-for (const [target, suffix] of Object.entries(targets) as [
-  Bun.Build.CompileTarget,
-  string,
-][]) {
-  await Bun.build({
-    entrypoints: ["./src/index.ts"],
-    compile: {
-      target,
-      outfile: `./out/ScrobbleRP-${suffix}`,
-    },
-    minify: true,
-  });
+for (const [target, suffix] of Object.entries(targets)) {
+  await $`deno compile --target ${target} -o ./out/ScrobbleRP-${suffix} -A ./src/index.ts`;
+  // await Bun.build({
+  //   entrypoints: ["./src/index.ts"],
+  //   compile: {
+  //     target,
+  //     outfile: `./out/ScrobbleRP-${suffix}`,
+  //   },
+  //   minify: true,
+  // });
 }

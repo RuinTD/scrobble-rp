@@ -1,7 +1,8 @@
-import { type SetActivity, Client } from "@xhayper/discord-rpc";
+import { Client, type SetActivity } from "@xhayper/discord-rpc";
 import { clientID } from "./config/index.ts";
 import chalk from "chalk";
 import { consola } from "consola";
+import $ from "dax";
 
 const log = consola.withTag(chalk.hex("#5865f2")("Discord"));
 
@@ -28,15 +29,16 @@ async function plsConnect() {
 
       await client.connect();
       let username = chalk.dim("@") + client.user?.username;
-      if (client.user?.discriminator != "0")
-        username =
-          client.user?.username + chalk.dim(`#${client.user?.discriminator}`);
+      if (client.user?.discriminator != "0") {
+        username = client.user?.username +
+          chalk.dim(`#${client.user?.discriminator}`);
+      }
       log.success(chalk.bold.green("Ready!"), username);
     } catch (e) {
       log.error("Failed to connect.");
       log.debug(e);
     }
-    await Bun.sleep(5000);
+    await $.sleep(5000);
   }
 }
 await plsConnect();
@@ -54,7 +56,7 @@ async function checkRetry() {
 setInterval(checkRetry, 1_000);
 
 export async function getDiscordUser() {
-  while (!client.user) await Bun.sleep(0);
+  while (!client.user) await $.sleep(0);
   return client.user;
 }
 
