@@ -1,20 +1,23 @@
-import { expect, test } from "bun:test";
-import { YAML } from "bun";
+import { assert, assertEquals } from "@std/assert";
+import * as YAML from "yaml";
 import { Config } from "./const.ts";
 import parseTemplate from "./template.ts";
-import example from "./example.yml";
+import exampleText from "./example.yml" with { type: "text" };
 import * as z from "zod";
+import $ from "dax";
 
-test("example generated", async () => {
-  const exampleFile = await Bun.file("config.example.yml").text();
+const example = YAML.parse(exampleText);
+
+Deno.test("example generated", async () => {
+  const exampleFile = await $.path("config.example.yml").readText();
   const expected = await parseTemplate(example);
-  expect(exampleFile).toBe(expected);
+  assertEquals(exampleFile, expected);
 });
 
-test("example matches config", async () => {
+Deno.test("example matches config", async () => {
   const example = z
     .record(z.string(), z.unknown())
-    .parse(YAML.parse(await Bun.file("config.example.yml").text()));
+    .parse(YAML.parse(await $.path("config.example.yml").readText()));
   example.username = "example";
-  expect(Config.parse(example)).toBeTruthy();
+  assert(Config.parse(example));
 });
