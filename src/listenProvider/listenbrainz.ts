@@ -150,12 +150,12 @@ const LBProvider: ListenProvider = {
   logoAsset: "listenbrainz",
 
   getListening,
-  async getUser() {
-    return {
+  getUser() {
+    return Promise.resolve({
       name: username,
       // LB doesn't have profile pictures
       url: `https://listenbrainz.org/user/${username}`,
-    };
+    });
   },
 };
 export default LBProvider;

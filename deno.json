@@ -5,6 +5,7 @@
     "build": "deno -A src/build.ts",
     "generateExample": "deno -A src/config/template.ts"
   },
+  "exclude": ["old/"],
   "imports": {
     "@inquirer/prompts": "npm:@inquirer/prompts@^8.4.3",
     "@ruintd/inquirer-enter": "jsr:@ruintd/inquirer-enter@^1.0.0",
