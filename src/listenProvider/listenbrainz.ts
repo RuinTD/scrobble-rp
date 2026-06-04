@@ -1,15 +1,15 @@
-import config from "../config/index.ts";
-import chalk from "chalk";
-import { z } from "zod/v4";
-import axios, { AxiosError } from "axios";
-import type { ListenProvider, Track } from "./index.ts";
 import * as Time from "@std/datetime/constants";
-import pMemoize from "p-memoize";
-import ExpiryMap from "expiry-map";
+import chalk from "chalk";
 import { consola } from "consola";
+import ExpiryMap from "expiry-map";
+import ky, { isKyError } from "ky";
+import pMemoize from "p-memoize";
+import { z } from "zod/v4";
+import config from "../config/index.ts";
+import type { ListenProvider, Track } from "./index.ts";
 
-const api = axios.create({
-  baseURL: config.listenBrainzAPIURL || "https://api.listenbrainz.org",
+const api = ky.create({
+  baseUrl: config.listenBrainzAPIURL || "https://api.listenbrainz.org/",
   headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
 });
 const log = consola.withTag(
@@ -49,18 +49,18 @@ async function _lookup(
   album?: string,
 ): Promise<Lookup | undefined> {
   try {
-    const { data } = await api.get("/1/metadata/lookup/", {
-      params: {
+    const data = await api.get("1/metadata/lookup/", {
+      searchParams: {
         recording_name: track,
         artist_name: artist,
         release_name: album,
         inc: "release",
         metadata: true,
       },
-    });
+    }).json();
     return Lookup.parse(data);
   } catch (e) {
-    if (e instanceof AxiosError) log.error(chalk.red("Error"), e.message);
+    if (isKyError(e)) log.error(chalk.red("Error"), e.message);
     else log.error(chalk.red("Error"), e);
     return;
   }
@@ -95,10 +95,9 @@ const LBPlayingAPI = z.object({
 
 async function _getListening(): Promise<Track | undefined | null> {
   try {
-    const { data } = await api.get(`/1/user/${username}/playing-now`);
-    log.debug("listenbrainz playing now", data);
-
-    const resp = LBPlayingAPI.parse(data);
+    const resp = await api.get(`1/user/${username}/playing-now`)
+      .json(LBPlayingAPI);
+    log.debug("listenbrainz playing now", resp);
     const track = resp.payload.listens[0]?.track_metadata;
     ready();
     if (!track) return;
@@ -136,7 +135,7 @@ async function _getListening(): Promise<Track | undefined | null> {
 
     return ret;
   } catch (e) {
-    if (e instanceof AxiosError) log.error(chalk.red("Error"), e.message);
+    if (isKyError(e)) log.error(chalk.red("Error"), e.message);
     else log.error(chalk.red("Error"), e);
     return null;
   }

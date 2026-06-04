@@ -1,9 +1,9 @@
-import axios from "axios";
-import { z } from "zod/v4";
 import { DAY } from "@std/datetime/constants";
-import type { Track } from "../listenProvider/index.ts";
 import ExpiryMap from "expiry-map";
+import ky from "ky";
 import pMemoize from "p-memoize";
+import { z } from "zod/v4";
+import type { Track } from "../listenProvider/index.ts";
 
 export const NintendoArtist = "Nintendo Co., Ltd.";
 
@@ -12,9 +12,9 @@ Thanks to Mario Wiki for reverse engineering the API!
 https://www.mariowiki.com/Talk:Nintendo_Music
 */
 
-const api = axios.create({
-  baseURL: "https://api.m.nintendo.com/catalog/",
-  params: {
+const api = ky.create({
+  baseUrl: "https://api.m.nintendo.com/catalog/",
+  searchParams: {
     lang: "en-US",
     country: "US",
     sdkVersion: "android-1.4.0_3e8b373-1",
@@ -43,8 +43,7 @@ const Games = z
 type Games = z.infer<typeof Games>;
 
 async function _getGames() {
-  const { data } = await api.get("gameGroups?groupingPolicy=HARDWARE");
-  return Games.parse(data);
+  return await api.get("gameGroups?groupingPolicy=HARDWARE").json(Games);
 }
 export const getGames = pMemoize(_getGames, { cache: new ExpiryMap(DAY) });
 
@@ -72,16 +71,16 @@ const GamePlaylists = z.object({
 type GamePlaylists = z.infer<typeof GamePlaylists>;
 
 async function _getPlaylists(gameUUID: string) {
-  const { data } = await api.get(`games/${gameUUID}/relatedPlaylists`);
-  return GamePlaylists.parse(data);
+  return await api.get(`games/${gameUUID}/relatedPlaylists`)
+    .json(GamePlaylists);
 }
 export const getPlaylists = pMemoize(_getPlaylists, {
   cache: new ExpiryMap(DAY),
 });
 
 async function _getPlaylist(playlistUUID: string) {
-  const { data } = await api.get(`officialPlaylists/${playlistUUID}`);
-  return GamePlaylist.parse(data);
+  return await api.get(`officialPlaylists/${playlistUUID}`)
+    .json(GamePlaylist);
 }
 export const getPlaylist = pMemoize(_getPlaylist, {
   cache: new ExpiryMap(DAY),

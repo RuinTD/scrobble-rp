@@ -1,15 +1,15 @@
-import config, { lastFmApiKey as apiKey } from "../config/index.ts";
-import chalk from "chalk";
-import { z } from "zod/v4";
-import axios, { AxiosError } from "axios";
-import type { ListenProvider, Track, User } from "./index.ts";
 import * as Time from "@std/datetime/constants";
-import pMemoize from "p-memoize";
-import ExpiryMap from "expiry-map";
+import chalk from "chalk";
 import { consola } from "consola";
+import ExpiryMap from "expiry-map";
+import ky, { isKyError } from "ky";
+import pMemoize from "p-memoize";
+import { z } from "zod/v4";
+import config, { lastFmApiKey as apiKey } from "../config/index.ts";
+import type { ListenProvider, Track, User } from "./index.ts";
 
-const api = axios.create({
-  baseURL: "https://ws.audioscrobbler.com/2.0/",
+const api = ky.create({
+  baseUrl: "https://ws.audioscrobbler.com/2.0/",
   headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
 });
 const log = consola.withTag(chalk.hex("#ba0000")("Last.fm"));
@@ -47,13 +47,13 @@ export const LastFMTracks = z.object({
 });
 
 async function sendRequest(params: Record<string, string>): Promise<unknown> {
-  const { data } = await api.get(`/`, {
-    params: {
+  const data = await api.get("", {
+    searchParams: {
       api_key: apiKey,
       format: "json",
       ...params,
     },
-  });
+  }).json();
 
   const error = LastFMError.safeParse(data);
   if (error.success) {
@@ -90,7 +90,7 @@ async function _getListening(): Promise<Track | undefined | null> {
 
     return ret;
   } catch (e) {
-    if (e instanceof AxiosError) log.error(chalk.red("Error"), e.message);
+    if (isKyError(e)) log.error(chalk.red("Error"), e.message);
     else log.error(chalk.red("Error"), e);
     return null;
   }
@@ -122,7 +122,7 @@ async function _getUser(): Promise<User | undefined> {
       url: user.url,
     };
   } catch (e) {
-    if (e instanceof AxiosError) log.error(chalk.red("Error"), e.message);
+    if (isKyError(e)) log.error(chalk.red("Error"), e.message);
     else log.error(chalk.red("Error"), e);
     return;
   }
@@ -145,7 +145,7 @@ async function _getTrackInfo(track: string, artist: string) {
     });
     return LastAPITrackInfo.parse(data).track;
   } catch (e) {
-    if (e instanceof AxiosError) log.error(chalk.red("Error"), e.message);
+    if (isKyError(e)) log.error(chalk.red("Error"), e.message);
     else log.error(chalk.red("Error"), e);
     return;
   }
