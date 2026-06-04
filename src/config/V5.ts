@@ -1,7 +1,7 @@
 import * as z from "zod";
-import ConfigV6 from "./V6.ts";
-
 import { ButtonType, OtherConfig, Provider } from "./V4.ts";
+
+import ConfigV6 from "./V6.ts";
 export { ButtonType, OtherConfig, Provider };
 
 export const check = z.object({ _VERSION: z.literal(5) });

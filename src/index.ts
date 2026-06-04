@@ -1,21 +1,21 @@
-import listenProvider from "./listenProvider/index.ts";
+import * as Time from "@std/datetime/constants";
 import { type SetActivity, StatusDisplayType } from "@xhayper/discord-rpc";
+import chalk from "chalk";
+import { consola } from "consola";
+import $ from "dax";
 import {
   ActivityType,
   type GatewayActivityButton,
 } from "discord-api-types/v10";
 import config, { ButtonType } from "./config/index.ts";
-import { hasOtherActivity } from "./otherIDs.ts";
 import { getDiscordUser, setActivity } from "./discord.ts";
 import { isTruthy } from "./lib/helper.ts";
-import * as Time from "@std/datetime/constants";
 import { getNintendoThumbnail, NintendoArtist } from "./lib/nintendoMusic.ts";
-import chalk from "chalk";
 import { tryResolveSongLink } from "./lib/songlink.ts";
-import { lookupMetadata } from "./listenProvider/listenbrainz.ts";
+import listenProvider from "./listenProvider/index.ts";
 import { getTrackInfo as getLastFmTrackInfo } from "./listenProvider/lastFm.ts";
-import { consola } from "consola";
-import $ from "dax";
+import { lookupMetadata } from "./listenProvider/listenbrainz.ts";
+import { hasOtherActivity } from "./otherIDs.ts";
 
 let lastStatus = {
   status: "",

@@ -1,9 +1,12 @@
-import YAML from "yaml";
-import type { StandardSchemaV1 } from "@standard-schema/spec";
 import * as process from "node:process";
-import chalk from "chalk";
+import EnterPrompt from "@ruintd/inquirer-enter";
 import * as ss from "@ruintd/standard-utils";
-import parseTemplate from "./template.ts";
+import type { StandardSchemaV1 } from "@standard-schema/spec";
+import chalk from "chalk";
+import { consola } from "consola";
+import $ from "dax";
+import { isEqual } from "es-toolkit";
+import YAML from "yaml";
 import {
   AnyConfig,
   ButtonType,
@@ -12,10 +15,7 @@ import {
   OtherConfig,
   Provider,
 } from "./const.ts";
-import { isEqual } from "es-toolkit";
-import { consola } from "consola";
-import EnterPrompt from "@ruintd/inquirer-enter";
-import $ from "dax";
+import parseTemplate from "./template.ts";
 
 export { ButtonType, Config, OtherConfig, Provider };
 

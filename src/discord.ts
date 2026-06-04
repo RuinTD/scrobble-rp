@@ -1,8 +1,8 @@
 import { Client, type SetActivity } from "@xhayper/discord-rpc";
-import { clientID } from "./config/index.ts";
 import chalk from "chalk";
 import { consola } from "consola";
 import $ from "dax";
+import { clientID } from "./config/index.ts";
 
 const log = consola.withTag(chalk.hex("#5865f2")("Discord"));
 

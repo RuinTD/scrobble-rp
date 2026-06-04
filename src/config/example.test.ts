@@ -1,10 +1,10 @@
 import { assert, assertEquals } from "@std/assert";
-import * as YAML from "yaml";
-import { Config } from "./const.ts";
-import parseTemplate from "./template.ts";
-import exampleText from "./example.yml" with { type: "text" };
-import * as z from "zod";
 import $ from "dax";
+import * as YAML from "yaml";
+import * as z from "zod";
+import { Config } from "./const.ts";
+import exampleText from "./example.yml" with { type: "text" };
+import parseTemplate from "./template.ts";
 
 const example = YAML.parse(exampleText);
 

@@ -1,6 +1,7 @@
 {
   "version": "5",
   "specifiers": {
+    "jsr:@ayk/lint-import-order@*": "0.1.0",
     "jsr:@ruintd/inquirer-enter@1": "1.0.0",
     "jsr:@ruintd/standard-utils@^3.1.0": "3.1.0",
     "jsr:@standard-schema/spec@^1.1.0": "1.1.0",
@@ -33,6 +34,9 @@
     "npm:zod@^4.4.3": "4.4.3"
   },
   "jsr": {
+    "@ayk/lint-import-order@0.1.0": {
+      "integrity": "be312f8269525055394118ac89d5a12dbb0bdc4a94d0ced4994b1823cc41c393"
+    },
     "@ruintd/inquirer-enter@1.0.0": {
       "integrity": "6005ae3453a5411b06157623eb68be1a46450a22f0603aa272c86692755797f1",
       "dependencies": [

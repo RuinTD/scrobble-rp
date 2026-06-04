@@ -1,9 +1,9 @@
-import chalk from "chalk";
-import { StartupRun } from "startup-run";
 import { confirm, select } from "@inquirer/prompts";
 import EnterPrompt from "@ruintd/inquirer-enter";
+import chalk from "chalk";
 import { consola } from "consola";
 import $ from "dax";
+import { StartupRun } from "startup-run";
 
 const run = StartupRun.create("Scrobble Rich Presence", {
   command: "bun",

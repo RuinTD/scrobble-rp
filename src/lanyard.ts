@@ -1,9 +1,9 @@
-import { ActivityType } from "discord-api-types/v10";
-import { z } from "zod/v4";
-import { getDiscordUser } from "./discord.ts";
 import chalk from "chalk";
 import { consola } from "consola";
 import $ from "dax";
+import { ActivityType } from "discord-api-types/v10";
+import { z } from "zod/v4";
+import { getDiscordUser } from "./discord.ts";
 
 const log = consola.withTag(chalk.hex("#d7bb87")("Lanyard"));
 

@@ -1,10 +1,10 @@
-import { Config } from "./const.ts";
 import * as ss from "@ruintd/standard-utils";
-import * as YAML from "yaml";
-import exampleText from "./example.yml" with { type: "text" };
+import $ from "dax";
 import { flattenObject } from "es-toolkit";
 import { format } from "prettier";
-import $ from "dax";
+import * as YAML from "yaml";
+import { Config } from "./const.ts";
+import exampleText from "./example.yml" with { type: "text" };
 
 // console.log(exampleText);
 const example = YAML.parse(exampleText);

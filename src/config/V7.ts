@@ -1,7 +1,7 @@
 import * as z from "zod";
-import ConfigV8 from "./V8.ts";
-
 import { OtherConfig, Provider } from "./V6.ts";
+
+import ConfigV8 from "./V8.ts";
 export { OtherConfig, Provider };
 
 export const ButtonType = z.enum([
