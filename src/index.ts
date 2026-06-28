@@ -9,13 +9,13 @@ import {
 } from "discord-api-types/v10";
 import config, { ButtonType } from "./config/index.ts";
 import { getDiscordUser, setActivity } from "./discord.ts";
-import { isTruthy } from "./lib/helper.ts";
 import { getNintendoThumbnail, NintendoArtist } from "./lib/nintendoMusic.ts";
 import { tryResolveSongLink } from "./lib/songlink.ts";
 import listenProvider from "./listenProvider/index.ts";
 import { getTrackInfo as getLastFmTrackInfo } from "./listenProvider/lastFm.ts";
 import { lookupMetadata } from "./listenProvider/listenbrainz.ts";
 import { hasOtherActivity } from "./otherIDs.ts";
+import { isNotNil } from "es-toolkit";
 
 let lastStatus = {
   status: "",
@@ -95,7 +95,7 @@ async function activity(): Promise<SetActivity | undefined | null> {
     buttons: [
       await getButton(config.button1),
       await getButton(config.button2),
-    ].filter(isTruthy),
+    ].filter(isNotNil),
   };
 
   if (config.smallImage == "profile" || config.smallImage == "logo") {
