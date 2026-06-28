@@ -3,7 +3,7 @@ import EnterPrompt from "@ruintd/inquirer-enter";
 import * as ss from "@ruintd/standard-utils";
 import type { StandardSchemaV1 } from "@standard-schema/spec";
 import chalk from "chalk";
-import { consola } from "consola";
+import { getLogger } from "../lib/logger.ts";
 import $ from "dax";
 import { isEqual } from "es-toolkit";
 import YAML from "yaml";
@@ -19,7 +19,7 @@ import parseTemplate from "./template.ts";
 
 export { ButtonType, Config, OtherConfig, Provider };
 
-const log = consola.withTag("Config");
+const log = getLogger("Config");
 const confFile = $.path("config.yml");
 
 try {

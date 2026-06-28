@@ -1,6 +1,6 @@
 import * as Time from "@std/datetime/constants";
 import chalk from "chalk";
-import { consola } from "consola";
+import { getLogger } from "../lib/logger.ts";
 import ExpiryMap from "expiry-map";
 import ky, { isKyError } from "ky";
 import pMemoize from "p-memoize";
@@ -12,13 +12,13 @@ const api = ky.create({
   baseUrl: "https://ws.audioscrobbler.com/2.0/",
   headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
 });
-const log = consola.withTag(chalk.hex("#ba0000")("Last.fm"));
+const log = getLogger(chalk.hex("#ba0000")("Last.fm"));
 const { username } = config;
 
 let isReady = false;
 function ready() {
   if (isReady) return;
-  log.success(chalk.green("First check successful!"));
+  log.log(chalk.green("First check successful!"));
   isReady = true;
 }
 

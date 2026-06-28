@@ -1,7 +1,7 @@
 import * as Time from "@std/datetime/constants";
 import { type SetActivity, StatusDisplayType } from "@xhayper/discord-rpc";
 import chalk from "chalk";
-import { consola } from "consola";
+import * as logger from "./lib/logger.ts";
 import $ from "dax";
 import {
   ActivityType,
@@ -26,7 +26,7 @@ while (true) {
   try {
     await setActivity(await activity());
   } catch (err) {
-    consola.error("Failed to update:", err);
+    logger.error("Failed to update:", err);
   }
   await $.sleep(Time.SECOND);
 }
@@ -53,7 +53,7 @@ export function status(status = "") {
       status,
       date: new Date(),
     };
-    if (status) consola.log(status);
+    if (status) logger.log(status);
   }
 }
 
@@ -136,7 +136,7 @@ async function activity(): Promise<SetActivity | undefined | null> {
     }
   }
 
-  consola.debug("activity", ret);
+  logger.debug("activity", ret);
   return ret;
 }
 

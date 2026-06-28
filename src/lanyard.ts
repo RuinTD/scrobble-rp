@@ -1,11 +1,11 @@
 import chalk from "chalk";
-import { consola } from "consola";
+import { getLogger } from "./lib/logger.ts";
 import $ from "dax";
 import { ActivityType } from "discord-api-types/v10";
 import { z } from "zod/v4";
 import { getDiscordUser } from "./discord.ts";
 
-const log = consola.withTag(chalk.hex("#d7bb87")("Lanyard"));
+const log = getLogger(chalk.hex("#d7bb87")("Lanyard"));
 
 export { ActivityType };
 
@@ -108,7 +108,7 @@ function connect() {
   };
 
   ws.onopen = () => {
-    log.success(chalk.bold.green("Connected!"));
+    log.log(chalk.bold.green("Connected!"));
   };
 
   ws.onclose = async () => {

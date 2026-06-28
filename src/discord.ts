@@ -1,10 +1,10 @@
 import { Client, type SetActivity } from "@xhayper/discord-rpc";
 import chalk from "chalk";
-import { consola } from "consola";
+import { getLogger } from "./lib/logger.ts";
 import $ from "dax";
 import { clientID } from "./config/index.ts";
 
-const log = consola.withTag(chalk.hex("#5865f2")("Discord"));
+const log = getLogger(chalk.hex("#5865f2")("Discord"));
 
 export const client = new Client({
   clientId: clientID,
@@ -36,7 +36,7 @@ async function plsConnect() {
         username = client.user?.username +
           chalk.dim(`#${client.user?.discriminator}`);
       }
-      log.success(chalk.bold.green("Ready!"), username);
+      log.info(chalk.bold.green("Ready!"), username);
       break;
     } catch (e) {
       log.error("Failed to connect.");
