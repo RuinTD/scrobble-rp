@@ -22,48 +22,61 @@ export const client = new Client({
 //   console.log(discordWord, chalk.redBright("Disconnected"));
 // });
 
-async function plsConnect() {
-  while (true) {
-    try {
-      if (client.isConnected) return;
+let isConnecting = false;
 
+async function plsConnect() {
+  if (client.isConnected || isConnecting) return;
+  isConnecting = true;
+
+  while (!client.isConnected) {
+    try {
       await client.connect();
       let username = chalk.dim("@") + client.user?.username;
-      if (client.user?.discriminator != "0") {
-        username = client.user?.username +
-          chalk.dim(`#${client.user?.discriminator}`);
+      if (client.user?.discriminator && client.user?.discriminator != "0") {
+        username =
+          client.user?.username + chalk.dim(`#${client.user?.discriminator}`);
       }
       log.success(chalk.bold.green("Ready!"), username);
+      break;
     } catch (e) {
       log.error("Failed to connect.");
       log.debug(e);
+      await $.sleep(5000);
     }
-    await $.sleep(5000);
   }
-}
-await plsConnect();
 
-let retrying = false; // Debounce
-async function checkRetry() {
-  if (retrying) return;
-  if (client.isConnected) return;
-  retrying = true;
-  log.error("Disconnected!");
-  await plsConnect();
-  retrying = false;
+  isConnecting = false;
 }
-// Doesn't work :(
-setInterval(checkRetry, 1_000);
+
+client.on("disconnected", () => {
+  log.error("Disconnected!");
+  plsConnect();
+});
+
+plsConnect();
+
+setInterval(() => {
+  if (!client.isConnected && !isConnecting) {
+    plsConnect();
+  }
+}, 5_000);
 
 export async function getDiscordUser() {
-  while (!client.user) await $.sleep(0);
+  while (!client.user) await $.sleep(100);
   return client.user;
 }
 
-export function setActivity(activity?: SetActivity | null): void {
+export async function setActivity(
+  activity?: SetActivity | null,
+): Promise<void> {
   // Do nothing if null
   if (activity === null) return;
+  if (!client.isConnected) return;
 
-  if (activity) client.user?.setActivity(activity);
-  else client.user?.clearActivity();
+  try {
+    if (activity) await client.user?.setActivity(activity);
+    else await client.user?.clearActivity();
+  } catch (err) {
+    log.debug("Failed to set activity:", err);
+  }
 }

@@ -24,7 +24,7 @@ let lastStatus = {
 
 while (true) {
   try {
-    setActivity(await activity());
+    await setActivity(await activity());
   } catch (err) {
     consola.error("Failed to update:", err);
   }
