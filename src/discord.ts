@@ -36,7 +36,7 @@ async function plsConnect() {
         username = client.user?.username +
           chalk.dim(`#${client.user?.discriminator}`);
       }
-      log.info(chalk.bold.green("Ready!"), username);
+      log.log(chalk.bold.green("Ready!"), username);
       break;
     } catch (e) {
       log.error("Failed to connect.");
