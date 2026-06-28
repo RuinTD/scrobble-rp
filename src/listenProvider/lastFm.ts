@@ -7,6 +7,7 @@ import pMemoize from "p-memoize";
 import { z } from "zod/v4";
 import config, { lastFmApiKey as apiKey } from "../config/index.ts";
 import type { ListenProvider, Track, User } from "./index.ts";
+import { once } from "es-toolkit";
 
 const api = ky.create({
   baseUrl: "https://ws.audioscrobbler.com/2.0/",
@@ -15,12 +16,9 @@ const api = ky.create({
 const log = getLogger(chalk.hex("#ba0000")("Last.fm"));
 const { username } = config;
 
-let isReady = false;
-function ready() {
-  if (isReady) return;
-  log.log(chalk.green("First check successful!"));
-  isReady = true;
-}
+const ready = once(() => {
+  log.info(chalk.bold.green("First check successful!"));
+});
 
 export const LastFMError = z.object({ error: z.number(), message: z.string() });
 export type LastFMError = z.infer<typeof LastFMError>;

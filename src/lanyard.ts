@@ -108,7 +108,7 @@ function connect() {
   };
 
   ws.onopen = () => {
-    log.log(chalk.bold.green("Connected!"));
+    log.info(chalk.bold.green("Connected!"));
   };
 
   ws.onclose = async () => {
