@@ -33,8 +33,8 @@ async function plsConnect() {
       await client.connect();
       let username = chalk.dim("@") + client.user?.username;
       if (client.user?.discriminator && client.user?.discriminator != "0") {
-        username =
-          client.user?.username + chalk.dim(`#${client.user?.discriminator}`);
+        username = client.user?.username +
+          chalk.dim(`#${client.user?.discriminator}`);
       }
       log.success(chalk.bold.green("Ready!"), username);
       break;
