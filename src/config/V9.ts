@@ -1,6 +1,7 @@
 import * as z from "zod";
 import { ButtonType, Provider } from "./V8.ts";
 export { ButtonType, Provider };
+import ConfigV10 from "./V10.ts";
 
 export const OtherConfig = z.object({
   any: z.boolean().default(false),
@@ -43,3 +44,15 @@ export const ConfigV9 = z.object({
   listenBrainzAPIURL: z.string().optional(),
 });
 export default ConfigV9;
+
+export const migrate = ConfigV9.transform((config) =>
+  ConfigV10.decode({
+    ...config,
+    _VERSION: 10,
+    smallText: config.smallImage == "profile"
+      ? "username"
+      : config.smallImage == "logo"
+      ? "provider"
+      : "none",
+  })
+);

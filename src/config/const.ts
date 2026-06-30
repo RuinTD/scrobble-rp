@@ -1,11 +1,11 @@
 import * as z from "zod";
 
 export const AnyConfig = z.object({ _VERSION: z.number() });
-import ConfigV9, {
+import CurrentConfig, {
   ButtonType,
   OtherConfig as OtherConfigSchema,
   Provider,
-} from "./V9.ts";
+} from "./V10.ts";
 export const Migrations = [
   await import("./V1.ts"),
   await import("./V2.ts"),
@@ -15,10 +15,11 @@ export const Migrations = [
   await import("./V6.ts"),
   await import("./V7.ts"),
   await import("./V8.ts"),
+  await import("./V9.ts"),
 ];
 
-export const Config = ConfigV9;
+export const Config = CurrentConfig;
 export const OtherConfig = OtherConfigSchema;
 export { ButtonType, Provider };
-export type Config = z.infer<typeof ConfigV9>;
+export type Config = z.infer<typeof CurrentConfig>;
 export type OtherConfig = z.infer<typeof OtherConfigSchema>;

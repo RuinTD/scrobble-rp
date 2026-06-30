@@ -48,9 +48,14 @@ export async function parse(config: Config) {
     ${line("provider")} # lastfm, listenbrainz
     ${line("username")}
 
-    ${line("smallImage")} # What to show on the small image
-    # logo: "Scrobbling on X" with provider logo
-    # profile: "Scrobbling as X on X" with profile picture
+    # What to show on the small image and text
+    ${line("smallImage")}
+    # logo: Provider logo
+    # profile: Profile picture from provider
+    # none: No small image (also disables small text)
+    ${line("smallText")}
+    # username: "Scrobbling as [Username] on [Provider]"
+    # provider: "Scrobbling on [Provider]"
     # none: No small image
 
     # Show "elapsed" time since start of song
@@ -96,6 +101,9 @@ export async function parse(config: Config) {
       custom: # Application IDs or names (case-insensitive)
         # "" is required for IDs
     ${extraIndent(YAML.stringify(config.disableOnPresence.custom, null, 2), 4)}
+
+    # ADVANCED
+    # You probably don't need to touch these
 
     ${line("lastFmApiKey", "")}
     ${line("discordClientId", "")}

@@ -1,11 +1,16 @@
-_VERSION: 9 # Do not touch this line!
+_VERSION: 10 # Do not touch this line!
 
 provider: lastfm # lastfm, listenbrainz
 username: ""
 
-smallImage: profile # What to show on the small image
-# logo: "Scrobbling on X" with provider logo
-# profile: "Scrobbling as X on X" with profile picture
+# What to show on the small image and text
+smallImage: profile
+# logo: Provider logo
+# profile: Profile picture from provider
+# none: No small image (also disables small text)
+smallText: username
+# username: "Scrobbling as [Username] on [Provider]"
+# provider: "Scrobbling on [Provider]"
 # none: No small image
 
 # Show "elapsed" time since start of song
@@ -52,6 +57,9 @@ disableOnPresence:
     # "" is required for IDs
     - "12345678901234567890"
     - Apple Music
+
+# ADVANCED
+# You probably don't need to touch these
 
 # lastFmApiKey: ""
 # discordClientId: ""

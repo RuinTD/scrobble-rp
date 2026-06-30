@@ -100,12 +100,18 @@ async function activity(): Promise<SetActivity | undefined | null> {
 
   if (config.smallImage == "profile" || config.smallImage == "logo") {
     ret.smallImageKey = listenProvider.logoAsset;
-    ret.smallImageText = `Scrobbling on ${listenProvider.name}`;
 
     if (config.smallImage == "profile") {
       const user = await listenProvider.getUser();
+      if (user) ret.smallImageKey = user.image || listenProvider.logoAsset;
+    }
+  }
+
+  if (config.smallText == "username" || config.smallText == "provider") {
+    ret.smallImageText = `Scrobbling on ${listenProvider.name}`;
+    if (config.smallText == "username") {
+      const user = await listenProvider.getUser();
       if (user) {
-        ret.smallImageKey = user.image || listenProvider.logoAsset;
         ret.smallImageText =
           `Scrobbling as ${user.name} on ${listenProvider.name}`;
       }
