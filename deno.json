@@ -3,7 +3,14 @@
     "start": "deno -A src/index.ts",
     "dev": "deno --watch src/index.ts",
     "build": "deno -A src/build.ts",
-    "generateExample": "deno -A src/config/template.ts"
+    "generateExample": "deno -A src/config/template.ts",
+    "format": "deno fmt",
+    "lint": "deno lint",
+    "check": "deno check",
+    "test": "deno test -A",
+    "checkAll": {
+      "dependencies": ["format", "lint", "check", "test"]
+    }
   },
   "exclude": ["old/"],
   "imports": {
