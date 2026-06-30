@@ -3,6 +3,10 @@ _VERSION: 10 # Do not touch this line!
 provider: lastfm # lastfm, listenbrainz
 username: ""
 
+# ListenBrainz User Token (https://listenbrainz.org/settings/)
+# Required to get album art
+# lbUserToken: xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx
+
 # What to show on the small image and text
 smallImage: profile
 # logo: Provider logo

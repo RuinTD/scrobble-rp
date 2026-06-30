@@ -11,7 +11,7 @@ import { once } from "es-toolkit";
 
 const api = ky.create({
   baseUrl: "https://ws.audioscrobbler.com/2.0/",
-  headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
+  headers: { "User-Agent": "https://github.com/RuinTD/scrobble-rp" },
 });
 const log = getLogger(chalk.hex("#ba0000")("Last.fm"));
 const { username } = config;

@@ -21,7 +21,7 @@ const api = ky.create({
     // membership: "BASIC",
     // packageType: "dash_cbcs",
   },
-  headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
+  headers: { "User-Agent": "https://github.com/RuinTD/scrobble-rp" },
 });
 
 const Game = z.object({

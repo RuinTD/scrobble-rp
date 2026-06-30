@@ -3,6 +3,8 @@ _VERSION: 10
 provider: lastfm
 username: ""
 
+# lbUserToken: ""
+
 smallImage: profile
 smallText: username
 
@@ -22,6 +24,7 @@ disableOnPresence:
   custom:
     - "12345678901234567890"
     - Apple Music
+
 # lastFmApiKey: ""
 # discordClientId: ""
 # listenBrainzAPIURL: http://localhost:8100

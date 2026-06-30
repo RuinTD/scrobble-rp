@@ -7,10 +7,11 @@ import pMemoize from "p-memoize";
 import { z } from "zod/v4";
 import config from "../config/index.ts";
 import type { ListenProvider, Track } from "./index.ts";
+import { once } from "es-toolkit";
 
 const api = ky.create({
-  baseUrl: config.listenBrainzAPIURL || "https://api.listenbrainz.org/",
-  headers: { "User-Agent": "https://github.com/RuiNtD/lastfm-rp" },
+  baseUrl: config.listenBrainzAPIURL || "https://api.listenbrainz.org",
+  headers: { "User-Agent": "https://github.com/RuinTD/scrobble-rp" },
 });
 const log = getLogger(
   // chalk.hex("#353070")("Listen") + chalk.hex("#eb743b")("Brainz")
@@ -18,12 +19,9 @@ const log = getLogger(
 );
 const { username } = config;
 
-let isReady = false;
-function ready() {
-  if (isReady) return;
-  log.log(chalk.green("First check successful!"));
-  isReady = true;
-}
+const ready = once(() => {
+  log.info(chalk.green("First check successful!"));
+});
 
 const Lookup = z.object({
   artist_mbids: z.array(z.string()).optional(),
@@ -43,13 +41,21 @@ const Lookup = z.object({
 });
 type Lookup = z.infer<typeof Lookup>;
 
+const warnNoAuth = once(() => {
+  log.warn("Functionality is limited without a lbUserToken in config");
+});
+
 async function _lookup(
   track: string,
   artist: string,
   album?: string,
 ): Promise<Lookup | undefined> {
+  if (!config.lbUserToken) {
+    warnNoAuth();
+    return;
+  }
   try {
-    const data = await api.get("1/metadata/lookup/", {
+    const data = await api.get("/1/metadata/lookup/", {
       searchParams: {
         recording_name: track,
         artist_name: artist,
@@ -57,6 +63,7 @@ async function _lookup(
         inc: "release",
         metadata: true,
       },
+      headers: { Authorization: `Token ${config.lbUserToken}` },
     }).json();
     return Lookup.parse(data);
   } catch (e) {
@@ -95,7 +102,7 @@ const LBPlayingAPI = z.object({
 
 async function _getListening(): Promise<Track | undefined | null> {
   try {
-    const resp = await api.get(`1/user/${username}/playing-now`)
+    const resp = await api.get(`/1/user/${username}/playing-now`)
       .json(LBPlayingAPI);
     log.debug("listenbrainz playing now", resp);
     const track = resp.payload.listens[0]?.track_metadata;

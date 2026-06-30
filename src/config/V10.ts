@@ -9,6 +9,8 @@ export const ConfigV10 = z.object({
   provider: Provider,
   username: z.string(),
 
+  lbUserToken: z.uuidv4().optional(),
+
   smallImage: z.enum(["logo", "profile", "none"]).default("none"),
   smallText: z.enum(["username", "provider", "none"]).default("none"),
 

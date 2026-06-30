@@ -17,6 +17,7 @@ async function _tryResolveSongLink(url: string): Promise<string | undefined> {
   if (httpUrl.safeParse(url).error) return;
 
   const resp = await ky.get("https://api.song.link/v1-alpha.1/links", {
+    headers: { "User-Agent": "https://github.com/RuinTD/scrobble-rp" },
     searchParams: { url },
     throwHttpErrors(status) {
       return status != 400;

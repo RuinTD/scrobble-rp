@@ -48,6 +48,10 @@ export async function parse(config: Config) {
     ${line("provider")} # lastfm, listenbrainz
     ${line("username")}
 
+    # ListenBrainz User Token (https://listenbrainz.org/settings/)
+    # Required to get album art
+    ${line("lbUserToken", "xxxxxxxx-xxxx-4xxx-xxxx-xxxxxxxxxxxx")}
+
     # What to show on the small image and text
     ${line("smallImage")}
     # logo: Provider logo
